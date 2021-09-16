@@ -6,7 +6,7 @@ orbs:
 
 jobs:
   cypress_with_ip_ranges:
-    executor: cypress/default
+    executor: cypress/browsers-chrome77
     circleci_ip_ranges: true
     steps:
       - checkout
@@ -15,7 +15,7 @@ jobs:
             - run: npm run cypress
 
   cypress_without_ip_ranges:
-    executor: cypress/default
+    executor: cypress/browsers-chrome77
     steps:
       - checkout
       - cypress/install:
