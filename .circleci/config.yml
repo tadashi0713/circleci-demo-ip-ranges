@@ -55,13 +55,13 @@ jobs:
 workflows:
   test_and_deploy: 
     jobs:
-      - install_cypress
-      - cypress_with_ip_ranges:
-          requires:
-            - install_cypress
-      - cypress_without_ip_ranges:
-          requires:
-            - install_cypress
+      # - install_cypress
+      # - cypress_with_ip_ranges:
+      #     requires:
+      #       - install_cypress
+      # - cypress_without_ip_ranges:
+      #     requires:
+      #       - install_cypress
       - deploy_cloud_run:
           context: deploy-cloud-run
           filters:
