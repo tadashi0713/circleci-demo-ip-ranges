@@ -5,22 +5,26 @@ orbs:
   cypress: cypress-io/cypress@1.29.0
 
 jobs:
+  install_cypress:
+    executor: cypress/browsers-chrome77
+    steps:
+      - checkout
+      - cypress/install
+
   cypress_with_ip_ranges:
     executor: cypress/browsers-chrome77
     circleci_ip_ranges: true
     steps:
-      - checkout
-      - cypress/install:
-          post-install: 
-            - run: npm run cypress
+      - attach_workspace:
+          at: ~/
+      - run: npm run cypress
 
   cypress_without_ip_ranges:
     executor: cypress/browsers-chrome77
     steps:
-      - checkout
-      - cypress/install:
-          post-install: 
-            - run: npm run cypress
+      - attach_workspace:
+          at: ~/
+      - run: npm run cypress
 
   deploy_cloud_run:
     machine:
@@ -45,8 +49,13 @@ jobs:
 workflows:
   test_and_deploy: 
     jobs:
-      - cypress_with_ip_ranges
-      - cypress_without_ip_ranges
+      - install_cypress
+      - cypress_with_ip_ranges:
+          requires:
+            - install_cypress
+      - cypress_without_ip_ranges:
+          requires:
+            - install_cypress
       - deploy_cloud_run:
           context: deploy-cloud-run
           filters:
