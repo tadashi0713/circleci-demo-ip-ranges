@@ -6,17 +6,21 @@ orbs:
 
 jobs:
   cypress_with_ip_ranges:
+    executor: cypress/default
     circleci_ip_ranges: true
     steps:
       - checkout
       - cypress/install:
-          post-install: npm run cypress
+          post-install: 
+            - run: npm run cypress
 
   cypress_without_ip_ranges:
+    executor: cypress/default
     steps:
       - checkout
       - cypress/install:
-          post-install: npm run cypress
+          post-install: 
+            - run: npm run cypress
 
   deploy_cloud_run:
     machine:
