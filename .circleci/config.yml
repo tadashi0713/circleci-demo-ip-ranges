@@ -1,42 +1,36 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@4.7.0
   gcp-gcr: circleci/gcp-gcr@0.13.0
 
 jobs:
   deploy_cloud_run:
     machine:
-      # Docker Layer Caching
       docker_layer_caching: true
-      # Resource Class
       resource_class: large
     steps:
       - checkout
       - gcp-gcr/gcr-auth
       - gcp-gcr/build-image:
-          image: first-circleci-demo
+          image: circleci-demo-ip-ranges
           tag: '${CIRCLE_SHA1}'
           registry-url: asia.gcr.io
       - gcp-gcr/push-image:
-          image: first-circleci-demo
+          image: circleci-demo-ip-ranges
           tag: '${CIRCLE_SHA1}'
           registry-url: asia.gcr.io
       - run:
           name: Deploy to Google Cloud run
           command: >-
-            gcloud run deploy first-circleci-demo
+            gcloud run deploy circleci-demo-ip-ranges
             --platform=managed --region=asia-northeast1 --allow-unauthenticated
-            --image=asia.gcr.io/${GOOGLE_PROJECT_ID}/first-circleci-demo:${CIRCLE_SHA1}
+            --image=asia.gcr.io/${GOOGLE_PROJECT_ID}/circleci-demo-ip-ranges:${CIRCLE_SHA1}
 
 workflows:
   test_and_deploy: 
     jobs:
-      - node/test:
-          run-command: test:ci
       - deploy_cloud_run:
-          requires:
-            - node/test
+          context: deploy-cloud-run
           filters:
             branches:
               only:
