@@ -14,17 +14,15 @@ jobs:
       - gcp-gcr/build-image:
           image: circleci-demo-ip-ranges
           tag: '${CIRCLE_SHA1}'
-          registry-url: asia.gcr.io
       - gcp-gcr/push-image:
           image: circleci-demo-ip-ranges
           tag: '${CIRCLE_SHA1}'
-          registry-url: asia.gcr.io
       - run:
           name: Deploy to Google Cloud run
           command: >-
             gcloud run deploy circleci-demo-ip-ranges
-            --platform=managed --region=asia-northeast1 --allow-unauthenticated
-            --image=asia.gcr.io/${GOOGLE_PROJECT_ID}/circleci-demo-ip-ranges:${CIRCLE_SHA1}
+            --platform=managed --region=us-east1 --allow-unauthenticated
+            --image=gcr.io/${GOOGLE_PROJECT_ID}/circleci-demo-ip-ranges:${CIRCLE_SHA1}
 
 workflows:
   test_and_deploy: 
