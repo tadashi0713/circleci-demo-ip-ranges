@@ -2,8 +2,22 @@ version: 2.1
 
 orbs:
   gcp-gcr: circleci/gcp-gcr@0.13.0
+  cypress: cypress-io/cypress@1.29.0
 
 jobs:
+  cypress_with_ip_ranges:
+    circleci_ip_ranges: true
+    steps:
+      - checkout
+      - cypress/install:
+          post-install: npm run cypress
+
+  cypress_without_ip_ranges:
+    steps:
+      - checkout
+      - cypress/install:
+          post-install: npm run cypress
+
   deploy_cloud_run:
     machine:
       docker_layer_caching: true
@@ -27,6 +41,8 @@ jobs:
 workflows:
   test_and_deploy: 
     jobs:
+      - cypress_with_ip_ranges
+      - cypress_without_ip_ranges
       - deploy_cloud_run:
           context: deploy-cloud-run
           filters:
