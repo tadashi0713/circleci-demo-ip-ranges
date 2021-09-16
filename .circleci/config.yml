@@ -17,6 +17,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - run:
+          name: Show IP address
+          command: curl -s https://checkip.amazonaws.com/
       - run: npm run cypress
 
   cypress_without_ip_ranges:
@@ -24,6 +27,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - run:
+          name: Show IP address
+          command: curl -s https://checkip.amazonaws.com/
       - run: npm run cypress
 
   deploy_cloud_run:
