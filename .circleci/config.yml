@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  gcp-gcr: circleci/gcp-gcr@0.13.0
   cypress: cypress-io/cypress@1.29.0
 
 jobs:
@@ -32,39 +31,13 @@ jobs:
           command: curl -s https://checkip.amazonaws.com/
       - run: npm run cypress
 
-  deploy_cloud_run:
-    machine:
-      docker_layer_caching: true
-      resource_class: large
-    steps:
-      - checkout
-      - gcp-gcr/gcr-auth
-      - gcp-gcr/build-image:
-          image: circleci-demo-ip-ranges
-          tag: '${CIRCLE_SHA1}'
-      - gcp-gcr/push-image:
-          image: circleci-demo-ip-ranges
-          tag: '${CIRCLE_SHA1}'
-      - run:
-          name: Deploy to Google Cloud run
-          command: >-
-            gcloud run deploy circleci-demo-ip-ranges
-            --platform=managed --region=us-east1 --allow-unauthenticated
-            --image=gcr.io/${GOOGLE_PROJECT_ID}/circleci-demo-ip-ranges:${CIRCLE_SHA1}
-
 workflows:
   test_and_deploy: 
     jobs:
-      # - install_cypress
-      # - cypress_with_ip_ranges:
-      #     requires:
-      #       - install_cypress
-      # - cypress_without_ip_ranges:
-      #     requires:
-      #       - install_cypress
-      - deploy_cloud_run:
-          context: deploy-cloud-run
-          filters:
-            branches:
-              only:
-                - master
+      - install_cypress
+      - cypress_with_ip_ranges:
+          requires:
+            - install_cypress
+      - cypress_without_ip_ranges:
+          requires:
+            - install_cypress
