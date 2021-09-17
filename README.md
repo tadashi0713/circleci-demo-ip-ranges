@@ -31,10 +31,21 @@ server {
 
 # Cypress tests with/without IP ranges
 
-## cypress_with_ip_ranges
-
-<img src="https://user-images.githubusercontent.com/8651308/133713980-d6d4c293-afd1-4d86-8ebe-424aa440ed41.png" width="80%">
+```yaml
+cypress_with_ip_ranges:
+  executor: cypress/browsers-chrome77
+  circleci_ip_ranges: true
+  steps:
+    - run:
+        name: Show IP address
+        command: curl -s https://checkip.amazonaws.com/
+    - run: npm run cypress
+```
 
 ## cypress_without_ip_ranges
 
 <img src="https://user-images.githubusercontent.com/8651308/133714113-86c1a1fc-ab71-400c-907e-1fae8f4320c5.png" width="80%">
+
+## [cypress_with_ip_ranges](https://app.circleci.com/pipelines/github/tadashi0713/circleci-demo-ip-ranges/43/workflows/44a224c6-4f0c-42d6-b7b3-10338c2cb77d/jobs/140)
+
+<img src="https://user-images.githubusercontent.com/8651308/133713980-d6d4c293-afd1-4d86-8ebe-424aa440ed41.png" width="80%">
