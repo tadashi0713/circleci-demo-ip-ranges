@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@1.29.0
   node: circleci/node@5.0.0
+  heroku: circleci/heroku@1.2.6
 
 jobs:
   install_cypress:
@@ -41,6 +42,10 @@ workflows:
       - node/run:
           name: build
           npm-run: build
+      - heroku/push-docker-image:
+          filters:
+            branches:
+              only: master
 
   cypress: 
     jobs:
@@ -51,3 +56,6 @@ workflows:
       - cypress_without_ip_ranges:
           requires:
             - install_cypress
+          filters:
+            branches:
+              only: master
