@@ -6,6 +6,14 @@ orbs:
   heroku: circleci/heroku@1.2.6
 
 jobs:
+  deploy_heroku:
+    machine: true
+    steps:
+    - checkout
+    - heroku/install
+    - heroku/push-docker-image
+    - heroku/release-docker-image
+
   install_cypress:
     executor: cypress/browsers-chrome77
     steps:
@@ -42,7 +50,7 @@ workflows:
       - node/run:
           name: build
           npm-run: build
-      - heroku/push-docker-image:
+      - deploy_heroku:
           filters:
             branches:
               only: master
