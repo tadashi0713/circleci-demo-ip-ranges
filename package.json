@@ -48,6 +48,6 @@
     "autoprefixer": "10.3.7",
     "cypress": "8.4.0",
     "postcss": "7.0.36",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@2.2.14"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@2.2.17"
   }
 }
