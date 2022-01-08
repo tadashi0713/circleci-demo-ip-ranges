@@ -41,3 +41,6 @@ workflows:
       - cypress_without_ip_ranges:
           requires:
             - install_cypress
+          filters:
+            branches:
+              only: master
