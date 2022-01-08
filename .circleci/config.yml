@@ -34,12 +34,13 @@ jobs:
 
 workflows:
   build_and_deploy_heroku:
-    - node/test:
-        run-command: test:ci
-        test-results-for: jest
-    - node/run:
-        name: build
-        npm-run: build
+    jobs:
+      - node/test:
+          run-command: test:ci
+          test-results-for: jest
+      - node/run:
+          name: build
+          npm-run: build
 
   cypress: 
     jobs:
