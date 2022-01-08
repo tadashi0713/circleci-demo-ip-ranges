@@ -11,8 +11,11 @@ jobs:
     steps:
     - checkout
     - heroku/install
-    - heroku/push-docker-image
-    - heroku/release-docker-image
+    - run:
+        name: Deploy to heroku
+        command: |
+          heroku container:push web -a $HEROKU_APP_NAME
+          heroku container:release web -a $HEROKU_APP_NAME
 
   install_cypress:
     executor: cypress/browsers-chrome77
